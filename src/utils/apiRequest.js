@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const APP_URL = "http://localhost:8080";
+const APP_URL = "https://social-fame-backend.vercel.app";
 
 export const API = axios.create({
   baseURL: APP_URL,

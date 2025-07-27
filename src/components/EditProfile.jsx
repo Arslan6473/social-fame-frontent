@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getUser, login, updateProfile} from "../Redux/features/userSlice";
+import { getUser, login, updateProfile } from "../Redux/features/userSlice";
 import { useForm } from "react-hook-form";
 import { MdClose } from "react-icons/md";
+import { BiImageAdd } from "react-icons/bi";
 import TextInput from "./TextInput";
 import Loading from "./Loading";
 import CustomButton from "./CustomButton";
@@ -15,11 +16,30 @@ function EditProfile() {
   const [errorMessage, setErrorMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [picture, setPicture] = useState(null);
+  const [picturePreview, setPicturePreview] = useState(user?.profileUrl || null);
+  const fileInputRef = useRef(null);
+  
   const {
     register,
     handleSubmit,
     formState: { errors }
   } = useForm({ defaultValues: { ...user } });
+
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    if (selectedFile) {
+      setPicture(selectedFile);
+      
+      // Create preview
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setPicturePreview(event.target.result);
+      };
+      reader.readAsDataURL(selectedFile);
+    }
+  };
+
+
 
   const updateHandle = async (data) => {
     const { firstName, lastName, profession, location } = data;
@@ -29,15 +49,14 @@ function EditProfile() {
       const profileUrl = picture && (await uploadFile(picture));
       const response = await apiRequest({
         url: "/users/update-user",
-        token:user.token,
+        token: user.token,
         data: { firstName, lastName, profession, location, profileUrl },
         method: "PUT",
       });
       if (response.success) {
         const token = user.token;
         dispatch(login({ token, ...response.data }));
-          dispatch(updateProfile(false))
-     
+        dispatch(updateProfile(false));
       }
       setErrorMessage({ success: response.success, message: response.message });
     } catch (error) {
@@ -75,6 +94,47 @@ function EditProfile() {
             className="px-4 sm:px-6 flex flex-col gap-3 2xl:gap-6"
             onSubmit={handleSubmit(updateHandle)}
           >
+            {/* Profile Picture Section */}
+            <div className="flex flex-col items-center gap-4">
+              <div className="relative">
+                {picturePreview ? (
+                  <>
+                    <img
+                      src={picturePreview}
+                      alt="Profile Preview"
+                      className="w-32 h-32 rounded-full object-cover border-2 border-ascent-1"
+                    />
+                 
+                  </>
+                ) : (
+                  <div className="w-32 h-32 rounded-full bg-inputBg flex items-center justify-center">
+                    <BiImageAdd size={32} className="text-ascent-2" />
+                  </div>
+                )}
+              </div>
+              
+              <div className="flex flex-col items-center">
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current.click()}
+                  className="flex items-center gap-2 text-ascent-2 hover:text-ascent-1 px-4 py-2 rounded-lg bg-inputBg"
+                >
+                  <BiImageAdd size={20} />
+                  <span>{picture ? "Change Photo" : "Add Photo"}</span>
+                </button>
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  className="hidden"
+                  onChange={handleFileChange}
+                  accept=".jpg, .jpeg, .png"
+                />
+                <p className="text-xs text-ascent-2 mt-1">
+                  JPG, JPEG or PNG (Max 5MB)
+                </p>
+              </div>
+            </div>
+
             <TextInput
               label="First Name"
               type="text"
@@ -111,20 +171,10 @@ function EditProfile() {
               styles="w-full"
               type="text"
               register={register("location", {
-                required: "Location does not match",
+                required: "Location is required",
               })}
               error={errors.location ? errors.location.message : ""}
             />
-
-            <label className="flex items-center gap-1 text-base text-ascent-2 hover:text-ascent-1 cursor-pointer my-4">
-              <input
-                type="file"
-                className=""
-                id="imgUpload"
-                onChange={(e) => setPicture(e.target.files[0])}
-                accept=".jpg, .jpeg, .png"
-              />
-            </label>
 
             {errorMessage && (
               <span
@@ -138,14 +188,14 @@ function EditProfile() {
               </span>
             )}
 
-            <div className="py-5 sm:flex sm:flex-row-reverse border-t border-[#66666645s]">
+            <div className="py-5 sm:flex sm:flex-row-reverse border-t border-[#66666645]">
               {isSubmitting ? (
                 <Loading />
               ) : (
                 <CustomButton
                   type="submit"
-                  title="Submit"
-                  containerStyles="inline-flex justify-center rounded-md bg-[#065ad8] px-8 py-3 text-sm font-medium text-white outline-none"
+                  title="Save Changes"
+                  containerStyles="inline-flex justify-center rounded-md bg-[#065ad8] px-8 py-3 text-sm font-medium text-white outline-none hover:bg-[#0548b0] transition-colors"
                 />
               )}
             </div>

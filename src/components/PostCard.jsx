@@ -151,7 +151,7 @@ function PostCard({ post, user, deletePost, likePost }) {
                 <DialogBox
                   title={"Delete Post"}
                   isOpen={isOpen}
-                  setIsOpen={setIsOpen}
+                  handleClose={() => setIsOpen(false)}
                   handleDelete={() => handleDeletePost(post._id)}
                 />
               )}

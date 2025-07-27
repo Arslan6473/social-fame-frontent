@@ -53,7 +53,7 @@ function CommentForm({ id, user, replyAt ,setComments,comments}) {
         onSubmit={handleSubmit(commentHandle)}
         className="w-full border-b border-[#6666645]"
       >
-        <div className="w-full flex py-4 items-center gap-2">
+        <div className="w-full flex pb-3 pt-2 items-center gap-2">
           <img
             src={user?.profileUrl ?? noProfile}
             alt="User Profile"
@@ -74,7 +74,7 @@ function CommentForm({ id, user, replyAt ,setComments,comments}) {
                 <CustomButton
                   type="submit"
                   title="Submit"
-                  containerStyles="rounded-full bg-[#0444a4] px-3 py-1 text-sm font-semibold text-white outline-none"
+                  containerStyles="rounded-full bg-[#0444a4] px-3 py-2.5 mt-2 text-sm font-semibold text-white outline-none"
                 />
               )}
         </div>
