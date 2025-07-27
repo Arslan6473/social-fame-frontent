@@ -277,11 +277,11 @@ function Home() {
             <ProfileCard user={user} edit={edit} />
             <FriendsCard friends={user.friends} />
           </div>
-          
+
           {/* center */}
           <div className="flex-1 bg-primary h-full shadow-lg px-4 flex flex-col gap-4 overflow-y-auto rounded-lg">
             {/* Post creation trigger */}
-            <div 
+            <div
               className="bg-primary px-4 rounded-lg cursor-pointer"
               onClick={() => setShowModal(true)}
             >
@@ -297,7 +297,7 @@ function Home() {
               </div>
               <div className="w-full py-4">
                 <div className="flex gap-4 justify-between items-center">
-                  <button 
+                  <button
                     className="flex items-center gap-1 text-base text-ascent-2 hover:text-ascent-1"
                     onClick={(e) => {
                       e.stopPropagation();
@@ -307,7 +307,7 @@ function Home() {
                     <BiImage />
                     <span>Photo</span>
                   </button>
-                  <button 
+                  <button
                     className="flex items-center gap-1 text-base text-ascent-2 hover:text-ascent-1"
                     onClick={(e) => {
                       e.stopPropagation();
@@ -317,7 +317,7 @@ function Home() {
                     <BiSolidVideo />
                     <span>Video</span>
                   </button>
-                  <button 
+                  <button
                     className="flex items-center gap-1 text-base text-ascent-2 hover:text-ascent-1"
                     onClick={(e) => {
                       e.stopPropagation();
@@ -329,7 +329,7 @@ function Home() {
                   </button>
                 </div>
               </div>
-              
+
               {/* Hidden file inputs */}
               <input
                 type="file"
@@ -376,7 +376,7 @@ function Home() {
               </div>
             )}
           </div>
-          
+
           {/* right */}
           <div className="hidden w-1/4 lg:flex flex-col h-full gap-8 overflow-y-auto">
             {/* friend requests */}
@@ -439,7 +439,7 @@ function Home() {
                 ))}
               </div>
             </div>
-            
+
             {/* suggest friends */}
             <div className="w-full bg-primary px-6 py-5 rounded-lg shadow-sm">
               <div className="flex items-center justify-between text-xl text-ascent-1 pb-2 border-b border-[#66666645]">
@@ -488,21 +488,21 @@ function Home() {
       {/* Post Creation Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex  items-center justify-center z-50 overflow-y-auto py-10">
-          <div 
+          <div
             ref={modalRef}
             className="bg-primary rounded-lg w-full shadow-lg max-w-2xl max-h-[90vh] overflow-y-auto"
           >
             <div className="sticky top-0 bg-primary z-10 p-4 border-b border-[#66666645]">
               <div className="flex justify-between items-center">
                 <h2 className="text-xl font-semibold text-ascent-1">Create Post</h2>
-                <button 
+                <button
                   onClick={() => setShowModal(false)}
                   className="text-ascent-1 hover:text-ascent-2"
                 >
                   <BsX size={24} />
                 </button>
               </div>
-              
+
               <div className="flex items-center gap-2 mt-2">
                 <img
                   src={user.profileUrl || noProfile}
@@ -520,7 +520,7 @@ function Home() {
                 </div>
               </div>
             </div>
-            
+
             <form onSubmit={handleSubmit(handlePost)} className="p-4">
               <textarea
                 ref={textareaRef}
@@ -528,7 +528,7 @@ function Home() {
                   required: "Write something about post",
                 })}
                 placeholder={`What's on your mind, ${user.firstName}?`}
-                className="w-full rounded-lg py-3 px-4 bg-inputBg text-ascent-1 border-none focus:ring-0 resize-none"
+                className="w-full rounded-lg py-3 px-4 text-ascent-2 placeholder:text-ascent-2 border-none focus:ring-0 resize-none"
                 style={{ minHeight: "100px", maxHeight: "300px" }}
                 onInput={(e) => {
                   e.target.style.height = "auto";
@@ -543,21 +543,21 @@ function Home() {
                   {errors.description.message}
                 </p>
               )}
-              
+
               {/* File preview */}
               {filePreview && (
                 <div className="mt-4 relative">
                   {fileType === "image" && (
-                    <img 
-                      src={filePreview} 
-                      alt="Preview" 
+                    <img
+                      src={filePreview}
+                      alt="Preview"
                       className="w-full max-h-96 object-contain rounded-lg"
                     />
                   )}
                   {fileType === "video" && (
-                    <video 
-                      src={filePreview} 
-                      controls 
+                    <video
+                      src={filePreview}
+                      controls
                       className="w-full max-h-96 object-contain rounded-lg"
                     />
                   )}
@@ -570,19 +570,18 @@ function Home() {
                   </button>
                 </div>
               )}
-              
+
               {errorMessage && (
                 <span
-                  className={`text-sm ${
-                    errorMessage.success === false
+                  className={`text-sm ${errorMessage.success === false
                       ? "text-[#f64949fe]"
                       : "text-[#2ba150fe]"
-                  } mt-0.5`}
+                    } mt-0.5`}
                 >
                   {errorMessage.message}
                 </span>
               )}
-              
+
               <div className="flex justify-between items-center mt-4 pt-4 border-t border-[#66666645] sticky bottom-0 bg-primary pb-2">
                 <div className="flex gap-4">
                   <label className="flex items-center gap-1 text-base text-ascent-2 hover:text-ascent-1 cursor-pointer">
@@ -615,7 +614,7 @@ function Home() {
                     <BsFiletypeGif />
                     <span>GIF</span>
                   </label>
-                  <button 
+                  <button
                     type="button"
                     className="flex items-center gap-1 text-base text-ascent-2 hover:text-ascent-1"
                   >
@@ -623,7 +622,7 @@ function Home() {
                     <span>Feeling</span>
                   </button>
                 </div>
-                
+
                 <div>
                   {posting ? (
                     <Loading />
